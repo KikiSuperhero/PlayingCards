@@ -1,7 +1,17 @@
 
 const startButton = document.querySelector("#start-button");
+const shuffleButton = document.querySelector("#shuffle-button");
+var Constants;
+fetch("./Constants.json")
+  .then((response) => {
+    return response.json();
+  })
+  .then(function (data) {
+    Constants = data;
+    console.log(Constants);
+  });
 
-var sDeckData = "";
+var oDeckData = "";
 
 const getDeckData = async () => {
   //debugger;
@@ -14,7 +24,7 @@ const getDeckData = async () => {
       "We made a new deck with following data: ",
       oNewDeckPromiseResponse
     );
-    sDeckData = oNewDeckPromiseResponse.deck_id;
+    oDeckData = oNewDeckPromiseResponse;
   } catch (e) {
     console.log("Could not card data!");
     console.log("Error: " + e);
@@ -41,5 +51,8 @@ const shuffleDeck = async (sDeckDataId) => {
 
 
 
-startButton.addEventListener("click", getDeckId);
+startButton.addEventListener("click", getDeckData);
+shuffleButton.addEventListener("click", function (){
+  shuffleDeck(oDeckData.deck_id);
+});
 
