@@ -26,7 +26,7 @@ const getDeckData = async () => {
     );
     oDeckData = oNewDeckPromiseResponse;
   } catch (e) {
-    console.log("Could not card data!");
+    console.log("Could not get card data!");
     console.log("Error: " + e);
   }
 };
@@ -38,7 +38,7 @@ const shuffleDeck = async (sDeckDataId) => {
     );
     let oShuffledDeckResponse = oShuffledDeck.data;
     console.log(
-      'Our shuffled Deck with the Data: ',
+      'Our shuffled deck with the data: ',
       oShuffledDeckResponse
     );
   } catch (e) {
@@ -47,7 +47,21 @@ const shuffleDeck = async (sDeckDataId) => {
   }
 };
 
-
+const drawACard = async (sDeckDataId) => {
+  try {
+    let oNewCard = await axios.get(
+      `https://deckofcardsapi.com/api/deck/${sDeckDataId}draw/?count=1`
+    );
+    let oNewCardResponse = oNewCard.data;
+    console.log(
+      'Our new card with the data: ',
+      oNewCardResponse
+    );
+  } catch (e) {
+    console.log("Could not draw a card!");
+    console.log("Error: " + e);
+  }
+};
 
 
 
