@@ -1,6 +1,7 @@
-
+const drawnCardsList = document.querySelector("#list-of-drawn-cards");
 const startButton = document.querySelector("#start-button");
 const shuffleButton = document.querySelector("#shuffle-button");
+const drawCardButton = document.querySelector("#draw-card-button");
 var Constants;
 fetch("./Constants.json")
   .then((response) => {
@@ -31,28 +32,29 @@ const getDeckData = async () => {
   }
 };
 
+const addCardToList = async (oCardData) => {
+  const newLI = document.createElement("LI");
+  newLI.append("some-text");
+  drawnCardsList.append(newLI);
+};
+
 const shuffleDeck = async (sDeckDataId) => {
   try {
     let oShuffledDeck = await axios.get(
       `https://deckofcardsapi.com/api/deck/${sDeckDataId}/shuffle/`
     );
     let oShuffledDeckResponse = oShuffledDeck.data;
-    console.log(
-      'Our shuffled Deck with the Data: ',
-      oShuffledDeckResponse
-    );
+    console.log("Our shuffled Deck with the Data: ", oShuffledDeckResponse);
   } catch (e) {
     console.log("Could not shuffle data!");
     console.log("Error: " + e);
   }
 };
 
-
-
-
-
 startButton.addEventListener("click", getDeckData);
-shuffleButton.addEventListener("click", function (){
+shuffleButton.addEventListener("click", function () {
   shuffleDeck(oDeckData.deck_id);
 });
-
+drawCardButton.addEventListener("click", function () {
+  addCardToList("blabla");
+});
