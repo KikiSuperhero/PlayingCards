@@ -1,8 +1,9 @@
+
 const startButton = document.querySelector("#start-button");
 
-var sDeckId = "";
+var sDeckData = "";
 
-const getDeckId = async () => {
+const getDeckData = async () => {
   //debugger;
   try {
     let oNewDeckPromise = await axios.get(
@@ -13,11 +14,32 @@ const getDeckId = async () => {
       "We made a new deck with following data: ",
       oNewDeckPromiseResponse
     );
-    sDeckId = oNewDeckPromiseResponse.deck_id;
+    sDeckData = oNewDeckPromiseResponse.deck_id;
   } catch (e) {
     console.log("Could not card data!");
     console.log("Error: " + e);
   }
 };
 
+const shuffleDeck = async (sDeckDataId) => {
+  try {
+    let oShuffledDeck = await axios.get(
+      `https://deckofcardsapi.com/api/deck/${sDeckDataId}/shuffle/`
+    );
+    let oShuffledDeckResponse = oShuffledDeck.data;
+    console.log(
+      'Our shuffled Deck with the Data: ',
+      oShuffledDeckResponse
+    );
+  } catch (e) {
+    console.log("Could not shuffle data!");
+    console.log("Error: " + e);
+  }
+};
+
+
+
+
+
 startButton.addEventListener("click", getDeckId);
+
