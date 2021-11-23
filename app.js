@@ -1,6 +1,7 @@
-
+const drawnCardsList = document.querySelector("#list-of-drawn-cards");
 const startButton = document.querySelector("#start-button");
 const shuffleButton = document.querySelector("#shuffle-button");
+const drawCardButton = document.querySelector("#draw-card-button");
 var Constants;
 fetch("./Constants.json")
   .then((response) => {
@@ -31,6 +32,12 @@ const getDeckData = async () => {
   }
 };
 
+const addCardToList = async (oCardData) => {
+  const newLI = document.createElement("LI");
+  newLI.append(oCardData.code);
+  drawnCardsList.append(newLI);
+};
+
 const shuffleDeck = async (sDeckDataId) => {
   try {
     let oShuffledDeck = await axios.get(
@@ -50,13 +57,14 @@ const shuffleDeck = async (sDeckDataId) => {
 const drawACard = async (sDeckDataId) => {
   try {
     let oNewCard = await axios.get(
-      `https://deckofcardsapi.com/api/deck/${sDeckDataId}draw/?count=1`
+      `https://deckofcardsapi.com/api/deck/${sDeckDataId}/draw/?count=1`
     );
-    let oNewCardResponse = oNewCard.data;
+    let oNewCardResponse = oNewCard.data.cards[0];
     console.log(
       'Our new card with the data: ',
       oNewCardResponse
     );
+    return oNewCardResponse;
   } catch (e) {
     console.log("Could not draw a card!");
     console.log("Error: " + e);
@@ -66,7 +74,15 @@ const drawACard = async (sDeckDataId) => {
 
 
 startButton.addEventListener("click", getDeckData);
-shuffleButton.addEventListener("click", function (){
+shuffleButton.addEventListener("click", function () {
   shuffleDeck(oDeckData.deck_id);
 });
-
+drawCardButton.addEventListener("click", async function () {
+  try{
+    var oCardData = await drawACard(oDeckData.deck_id);
+    addCardToList(oCardData);
+  } catch (e){
+    console.log(e);
+  }
+  
+});
